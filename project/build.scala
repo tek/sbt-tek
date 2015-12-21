@@ -5,6 +5,8 @@ import sbt.Keys._
 
 import com.typesafe.sbt.SbtScalariform.autoImport._
 
+import bintray.BintrayPlugin
+
 import TrypKeys._
 import VersionUpdateKeys._
 
@@ -20,12 +22,32 @@ with Tryplug
 {
   override def settings = super.settings ++ pluginVersionDefaults
 
+  val pattern = "[organisation]/[module]/[revision]/[artifact]-[revision]" +
+    "(-[timestamp]).[ext]"
+
+  val nexusUri = "https://nexus.ternarypulsar.com/nexus/content/repositories"
+
+  lazy val common = Seq(
+    resolvers ++= List("snapshots", "releases").map { tpe ⇒
+      Resolver.url(s"pulsar $tpe", url(s"$nexusUri/$tpe"))(Patterns(pattern))
+    },
+    publishTo := {
+        val repo = if (isSnapshot.value) "snapshots" else "releases"
+        Some(repo at s"$nexusUri/$repo")
+    },
+    publishMavenStyle := false,
+    publishArtifact in (Compile, packageDoc) := false,
+    publishArtifact in (Compile, packageSrc) := false
+  )
+
   lazy val core = pluginSubProject("core")
+    .settings(common: _*)
     .settings(
       scalariformFormat in Compile := Nil,
       scalariformFormat in Test := Nil,
       name := "tek-core"
     )
+    .disablePlugins(BintrayPlugin)
 
   lazy val root = pluginSubProject("root")
     .in(file("."))
@@ -41,8 +63,9 @@ with Tryplug
       }
     )
     .aggregate(core)
+    .disablePlugins(BintrayPlugin)
 
-  val wantDevdeps = false
+  val wantDevdeps = true
 
   object TekDeps
   extends Deps
