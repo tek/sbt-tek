@@ -35,7 +35,7 @@ with Tryplug
         val repo = if (isSnapshot.value) "snapshots" else "releases"
         Some(repo at s"$nexusUri/$repo")
     },
-    publishMavenStyle := false,
+    publishMavenStyle := true,
     publishArtifact in (Compile, packageDoc) := false,
     publishArtifact in (Compile, packageSrc) := false
   )
