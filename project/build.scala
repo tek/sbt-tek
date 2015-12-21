@@ -51,6 +51,7 @@ with Tryplug
 
   lazy val root = pluginSubProject("root")
     .in(file("."))
+    .settings(common: _*)
     .settings(
       publish := (),
       publishLocal := (),
