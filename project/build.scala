@@ -22,12 +22,11 @@ with Tryplug
 {
   override def settings = super.settings ++ pluginVersionDefaults
 
-  val nexusUri = "https://nexus.ternarypulsar.com/nexus/content/repositories"
-
   lazy val common = Seq(
     publishTo := {
-        val repo = if (isSnapshot.value) "snapshots" else "releases"
-        Some(repo at s"$nexusUri/$repo")
+      val base = nexusUri("nexus.ternarypulsar.com")
+      val repo = if (isSnapshot.value) "snapshots" else "releases"
+      Some(repo at s"$base/$repo")
     },
     publishMavenStyle := true,
     publishArtifact in (Compile, packageDoc) := false,
@@ -60,8 +59,6 @@ with Tryplug
     .aggregate(core)
     .disablePlugins(BintrayPlugin)
 
-  val wantDevdeps = true
-
   object TekDeps
   extends Deps
   {
@@ -73,7 +70,7 @@ with Tryplug
       "tek/tryplug", "tryplug", "macros")
 
     val scalariform = pd("org.scalariform", "sbt-scalariform",
-      scalariformVersion, "daniel-trinh", "sbt-scalariform")
+      scalariformVersion, "daniel-trinh", "sbt-scalariform").no
 
     val core = ids(tryplug, scalariform)
 
