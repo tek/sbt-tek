@@ -22,15 +22,9 @@ with Tryplug
 {
   override def settings = super.settings ++ pluginVersionDefaults
 
-  val pattern = "[organisation]/[module]/[revision]/[artifact]-[revision]" +
-    "(-[timestamp]).[ext]"
-
   val nexusUri = "https://nexus.ternarypulsar.com/nexus/content/repositories"
 
   lazy val common = Seq(
-    resolvers ++= List("snapshots", "releases").map { tpe ⇒
-      Resolver.url(s"pulsar $tpe", url(s"$nexusUri/$tpe"))(Patterns(pattern))
-    },
     publishTo := {
         val repo = if (isSnapshot.value) "snapshots" else "releases"
         Some(repo at s"$nexusUri/$repo")
