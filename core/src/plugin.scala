@@ -52,6 +52,8 @@ with Tryplug
 
   override def projectSettings =
     super.projectSettings ++ deps(tekUserLevelName) ++ Seq(
+      VersionUpdateKeys.autoUpdateVersions := true,
+      update <<= update dependsOn updateTekVersion,
       resolvers ++= List("snapshots", "releases").map { tpe ⇒
         s"pulsar $tpe" at s"${nexusUri(pulsar)}/$tpe"
       }
