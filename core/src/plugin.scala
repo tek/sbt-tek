@@ -48,14 +48,20 @@ with Tryplug
     updater.update(pspec("tek", "sbt-tek", TekKeys.tekVersion))
   }
 
+  def pulsar = "nexus.ternarypulsar.com"
+
   override def projectSettings =
-    super.projectSettings ++ deps(tekUserLevelName)
+    super.projectSettings ++ deps(tekUserLevelName) ++ Seq(
+      resolvers ++= List("snapshots", "releases").map { tpe ⇒
+        s"pulsar $tpe" at s"${nexusUri(pulsar)}/$tpe"
+      }
+    )
 
   object TekDeps
   extends Deps
   {
     override def deps = super.deps ++ Map(
-      userLevelName → userLevel
+      tekUserLevelName → userLevel
     )
 
     val huy = "com.hanhuy.sbt"
@@ -63,8 +69,8 @@ with Tryplug
     val protifyName = "protify"
 
     val userLevel = ids(
-      pd(trypOrg, "tryplug", TrypKeys.tryplugVersion, "tek", "tek/tryplug",
-        "tryplug", "macros"),
+      pd(trypOrg, "tek-core", TekKeys.tekVersion, "tek", "tek/sbt-tek",
+        "tek", "core"),
       pd("org.ensime", "ensime-sbt", ensimeVersion, "ensime",
         "ensime/ensime-sbt"),
       pd("org.scalariform", "sbt-scalariform",
