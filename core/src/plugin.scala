@@ -99,8 +99,8 @@ with Tryplug
         "ensime/ensime-sbt"),
       pd("org.scalariform", "sbt-scalariform", scalariformVersion,
         "joprice", "maven", "daniel-trinh/sbt-scalariform"),
-      // pd("net.virtual-void", "sbt-dependency-graph", depGraphVersion,
-      //   "jrudolph", "maven", "jrudolph/sbt-dependency-graph"),
+      pd("net.virtual-void", "sbt-dependency-graph", depGraphVersion,
+        "jrudolph", "maven", "jrudolph/sbt-dependency-graph"),
       pd("com.github.gseitz", "sbt-release", sbtReleaseVersion, "sbt",
         "sbt-plugin-releases", "sbt/sbt-release")
     )
