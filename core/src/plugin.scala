@@ -31,8 +31,23 @@ with Tryplug
   override def projectSettings =
     super.projectSettings ++ Seq(
       scalariformFormat in Compile := Nil,
-      scalariformFormat in Test := Nil
+      scalariformFormat in Test := Nil,
+      releaseProc
     )
+
+  def releaseProc = {
+    releaseProcess := Seq[ReleaseStep](
+      inquireVersions,
+      runTest,
+      setReleaseVersion,
+      commitReleaseVersion,
+      tagRelease,
+      publishArtifacts,
+      setNextVersion,
+      commitNextVersion,
+      pushChanges
+    )
+  }
 }
 
 object TekUserLevel
@@ -62,24 +77,8 @@ with Tryplug
       update <<= update dependsOn updateTekVersion,
       resolvers ++= List("snapshots", "releases").map { tpe ⇒
         s"pulsar $tpe" at s"${nexusUri(pulsar)}/$tpe"
-      },
-      releaseProc
+      }
     )
-
-  def releaseProc = {
-    releaseProcess := Seq[ReleaseStep](
-      checkSnapshotDependencies,
-      inquireVersions,
-      runTest,
-      setReleaseVersion,
-      commitReleaseVersion,
-      tagRelease,
-      publishArtifacts,
-      setNextVersion,
-      commitNextVersion,
-      pushChanges
-    )
-  }
 
   object TekDeps
   extends PluginDeps
@@ -96,13 +95,13 @@ with Tryplug
       pd(trypOrg, "tek-core", TekKeys.tekVersion, "tek", "sbt-plugins",
         "tek-core", "tek/sbt-tek", "core"),
       pd("org.ensime", "ensime-sbt", ensimeVersion, "", "",
-        "ensime/ensime-sbt"),
+        "ensime/ensime-sbt").no,
       pd("org.scalariform", "sbt-scalariform", scalariformVersion,
-        "joprice", "maven", "daniel-trinh/sbt-scalariform"),
+        "joprice", "maven", "daniel-trinh/sbt-scalariform").no,
       pd("net.virtual-void", "sbt-dependency-graph", depGraphVersion,
-        "jrudolph", "maven", "jrudolph/sbt-dependency-graph"),
+        "jrudolph", "maven", "jrudolph/sbt-dependency-graph").no,
       pd("com.github.gseitz", "sbt-release", sbtReleaseVersion, "sbt",
-        "sbt-plugin-releases", "sbt/sbt-release")
+        "sbt-plugin-releases", "sbt/sbt-release").no
     )
   }
 
