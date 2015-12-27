@@ -82,17 +82,17 @@ with Tryplug
   }
 
   object TekDeps
-  extends Deps
+  extends PluginDeps
   {
     override def deps = super.deps ++ Map(
-      tekUserLevelName → userLevel
+      tekUserLevelName → tekUserLevel
     )
 
     val huy = "com.hanhuy.sbt"
     val sdkName = "android-sdk-plugin"
     val protifyName = "protify"
 
-    val userLevel = ids(
+    val tekUserLevel = ids(
       pd(trypOrg, "tek-core", TekKeys.tekVersion, "tek", "sbt-plugins",
         "tek-core", "tek/sbt-tek", "core"),
       pd("org.ensime", "ensime-sbt", ensimeVersion, "", "",

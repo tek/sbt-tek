@@ -65,7 +65,7 @@ with Tryplug
     .disablePlugins(BintrayPlugin)
 
   object TekDeps
-  extends Deps
+  extends PluginDeps
   {
     override def deps = super.deps ++ Map(
       "core" → core
