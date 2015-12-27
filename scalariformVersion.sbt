@@ -1,1 +1,1 @@
-tryp.TekKeys.scalariformVersion in Global := "1.6.0"
+tryp.TekBuildKeys.scalariformVersion in Global := "1.6.0"

@@ -5,12 +5,17 @@ import Keys._
 
 import com.typesafe.sbt.SbtScalariform.autoImport._
 
+import sbtrelease.ReleasePlugin.autoImport._
+import ReleaseTransformations._
+
 object TekKeys
 {
   import TrypKeys.Tryp
   val tekVersion = settingKey[String]("sbt-tek version") in Tryp
   val ensimeVersion = settingKey[String]("ensime version") in Tryp
   val scalariformVersion = settingKey[String]("scalariform version") in Tryp
+  val depGraphVersion = settingKey[String]("dependency-graph version") in Tryp
+  val sbtReleaseVersion = settingKey[String]("release version") in Tryp
 }
 import TekKeys._
 
@@ -45,19 +50,36 @@ with Tryplug
     val updater = new Versions {
       def projectDir = Some(baseDirectory.value / "project")
     }
-    updater.update(pspec("tek", "sbt-tek", TekKeys.tekVersion))
+    updater.update(pspec("tek", "sbt-plugins", "tek-core", TekKeys.tekVersion))
   }
 
   def pulsar = "nexus.ternarypulsar.com"
 
   override def projectSettings =
-    super.projectSettings ++ deps(tekUserLevelName) ++ Seq(
+    super.projectSettings ++ deps(tekUserLevelName) ++
+    deps.pluginVersions(tekUserLevelName) ++ Seq(
       VersionUpdateKeys.autoUpdateVersions := true,
       update <<= update dependsOn updateTekVersion,
       resolvers ++= List("snapshots", "releases").map { tpe ⇒
         s"pulsar $tpe" at s"${nexusUri(pulsar)}/$tpe"
-      }
+      },
+      releaseProc
     )
+
+  def releaseProc = {
+    releaseProcess := Seq[ReleaseStep](
+      checkSnapshotDependencies,
+      inquireVersions,
+      runTest,
+      setReleaseVersion,
+      commitReleaseVersion,
+      tagRelease,
+      publishArtifacts,
+      setNextVersion,
+      commitNextVersion,
+      pushChanges
+    )
+  }
 
   object TekDeps
   extends Deps
@@ -71,12 +93,16 @@ with Tryplug
     val protifyName = "protify"
 
     val userLevel = ids(
-      pd(trypOrg, "tek-core", TekKeys.tekVersion, "tek", "tek/sbt-tek",
-        "tek", "core"),
-      pd("org.ensime", "ensime-sbt", ensimeVersion, "ensime",
+      pd(trypOrg, "tek-core", TekKeys.tekVersion, "tek", "sbt-plugins",
+        "tek-core", "tek/sbt-tek", "core"),
+      pd("org.ensime", "ensime-sbt", ensimeVersion, "", "",
         "ensime/ensime-sbt"),
-      pd("org.scalariform", "sbt-scalariform",
-        scalariformVersion, "daniel-trinh", "sbt-scalariform")
+      pd("org.scalariform", "sbt-scalariform", scalariformVersion,
+        "joprice", "maven", "daniel-trinh/sbt-scalariform"),
+      // pd("net.virtual-void", "sbt-dependency-graph", depGraphVersion,
+      //   "jrudolph", "maven", "jrudolph/sbt-dependency-graph"),
+      pd("com.github.gseitz", "sbt-release", sbtReleaseVersion, "sbt",
+        "sbt-plugin-releases", "sbt/sbt-release")
     )
   }
 

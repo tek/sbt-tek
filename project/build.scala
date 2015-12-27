@@ -10,11 +10,12 @@ import bintray.BintrayPlugin
 import TrypKeys._
 import VersionUpdateKeys._
 
-object TekKeys
+object TekBuildKeys
 {
   val scalariformVersion = settingKey[String]("scalariform version")
+  val sbtReleaseVersion = settingKey[String]("release version")
 }
-import TekKeys._
+import TekBuildKeys._
 
 object TekBuild
 extends sbt.Build
@@ -36,6 +37,10 @@ with Tryplug
   lazy val core = pluginSubProject("core")
     .settings(common: _*)
     .settings(
+        resolvers += Resolver.url(
+          "bintray-tek-sbt",
+          url("https://dl.bintray.com/tek/sbt-plugins")
+        )(Resolver.ivyStylePatterns),
       scalariformFormat in Compile := Nil,
       scalariformFormat in Test := Nil,
       name := "tek-core"
@@ -67,12 +72,15 @@ with Tryplug
     )
 
     val tryplug = pd("tryp.sbt", "tryplug", tryplugVersion, "tek",
-      "tek/tryplug", "tryplug", "macros")
+      "sbt-plugins", "tek/tryplug", "tryplug", "macros")
 
     val scalariform = pd("org.scalariform", "sbt-scalariform",
-      scalariformVersion, "daniel-trinh", "sbt-scalariform").no
+      scalariformVersion, "", "", "daniel-trinh/sbt-scalariform").no
 
-    val core = ids(tryplug, scalariform)
+    val release = pd("com.github.gseitz", "sbt-release", sbtReleaseVersion,
+      "sbt", "sbt-plugin-releases", "sbt/sbt-release")
+
+    val core = ids(tryplug, scalariform, release)
 
     val root = ids(tryplug)
   }
