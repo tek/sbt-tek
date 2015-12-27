@@ -65,7 +65,7 @@ with Tryplug
       scalariformVersion, "", "", "daniel-trinh/sbt-scalariform").no
 
     val release = pd("com.github.gseitz", "sbt-release", sbtReleaseVersion,
-      "sbt", "sbt-plugin-releases", "sbt/sbt-release")
+      "sbt", "sbt-plugin-releases", "sbt/sbt-release").no
 
     val core = ids(tryplug, scalariform, release)
 
