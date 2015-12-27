@@ -47,21 +47,8 @@ with Tryplug
     )
     .disablePlugins(BintrayPlugin)
 
-  lazy val root = pluginSubProject("root")
-    .in(file("."))
+  lazy val root = pluginProject("root")
     .settings(common: _*)
-    .settings(
-      publish := (),
-      publishLocal := (),
-      versionUpdater := {
-        new Versions {
-          def projectDir =
-            Option(VersionUpdateKeys.projectDir.value / "project")
-          override def handlePrefix = "P."
-        }
-      }
-    )
-    .aggregate(core)
     .disablePlugins(BintrayPlugin)
 
   object TekDeps
