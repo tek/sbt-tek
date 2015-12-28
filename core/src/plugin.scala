@@ -65,7 +65,8 @@ with Tryplug
     val updater = new Versions {
       def projectDir = Some(baseDirectory.value / "project")
     }
-    updater.update(pspec("tek", "sbt-plugins", "tek-core", TekKeys.tekVersion))
+    updater.update(
+      bintraySpec("tek", "sbt-plugins", "tek-core", TekKeys.tekVersion))
   }
 
   def pulsar = "nexus.ternarypulsar.com"
@@ -95,7 +96,7 @@ with Tryplug
 
     val tekUserLevel = ids(
       plugin(trypOrg, "tek-core", TekKeys.tekVersion, "tek-core",
-        List("tek/sbt-tek", "core")),
+        List("tek/sbt-tek", "core")).bintray("tek"),
       plugin("org.ensime", "ensime-sbt", ensimeVersion,
         "ensime/ensime-sbt").no,
       plugin("org.scalariform", "sbt-scalariform", scalariformVersion,

@@ -23,30 +23,15 @@ with Tryplug
 {
   override def settings = super.settings ++ pluginVersionDefaults
 
-  lazy val common = Seq(
-    publishTo := {
-      val base = nexusUri("nexus.ternarypulsar.com")
-      val repo = if (isSnapshot.value) "snapshots" else "releases"
-      Some(repo at s"$base/$repo")
-    },
-    publishMavenStyle := true,
-    publishArtifact in (Compile, packageDoc) := false,
-    publishArtifact in (Compile, packageSrc) := false
-  )
-
   lazy val core = pluginSubProject("core")
-    .settings(common: _*)
     .settings(
       scalariformFormat in Compile := Nil,
       scalariformFormat in Test := Nil,
       name := "tek-core"
     )
-    .disablePlugins(BintrayPlugin)
 
   lazy val root = pluginProject("root")
-    .settings(common: _*)
     .aggregate(core)
-    .disablePlugins(BintrayPlugin)
 
   object TekDeps
   extends PluginDeps
