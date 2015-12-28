@@ -45,6 +45,7 @@ with Tryplug
 
   lazy val root = pluginProject("root")
     .settings(common: _*)
+    .aggregate(core)
     .disablePlugins(BintrayPlugin)
 
   object TekDeps
