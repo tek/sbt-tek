@@ -101,8 +101,7 @@ with Tryplug
         "ensime/ensime-sbt").no,
       plugin("org.scalariform", "sbt-scalariform", scalariformVersion,
         "daniel-trinh/sbt-scalariform").no.maven,
-      plugin(vv, dg, depGraphVersion, s"jrudolph/$dg").no
-        .bintray("bintray", "jcenter", s"$vv:$dg"),
+      plugin(vv, dg, depGraphVersion, s"jrudolph/$dg").no.maven,
       plugin("com.github.gseitz", "sbt-release", sbtReleaseVersion,
         "sbt/sbt-release").no.bintray("sbt", "sbt-plugin-releases")
     )

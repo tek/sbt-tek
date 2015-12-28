@@ -5,8 +5,6 @@ import sbt.Keys._
 
 import com.typesafe.sbt.SbtScalariform.autoImport._
 
-import bintray.BintrayPlugin
-
 import TrypKeys._
 import VersionUpdateKeys._
 
