@@ -99,7 +99,7 @@ with Tryplug
       plugin("org.ensime", "ensime-sbt", ensimeVersion,
         "ensime/ensime-sbt").no,
       plugin("org.scalariform", "sbt-scalariform", scalariformVersion,
-        "daniel-trinh/sbt-scalariform").no,
+        "daniel-trinh/sbt-scalariform").no.maven,
       plugin(vv, dg, depGraphVersion, s"jrudolph/$dg").no
         .bintray("bintray", "jcenter", s"$vv:$dg"),
       plugin("com.github.gseitz", "sbt-release", sbtReleaseVersion,
