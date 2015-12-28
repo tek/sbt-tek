@@ -37,10 +37,6 @@ with Tryplug
   lazy val core = pluginSubProject("core")
     .settings(common: _*)
     .settings(
-        resolvers += Resolver.url(
-          "bintray-tek-sbt",
-          url("https://dl.bintray.com/tek/sbt-plugins")
-        )(Resolver.ivyStylePatterns),
       scalariformFormat in Compile := Nil,
       scalariformFormat in Test := Nil,
       name := "tek-core"
@@ -58,16 +54,17 @@ with Tryplug
       "core" → core
     )
 
-    val tryplug = pd("tryp.sbt", "tryplug", tryplugVersion, "tek",
-      "sbt-plugins", "tek/tryplug", "tryplug", "macros")
+    val tryplug = plugin("tryp.sbt", "tryplug", tryplugVersion, 
+      "tek/tryplug", List("tryplug", "macros")).bintray("tek", "sbt-plugins")
 
-    val scalariform = pd("org.scalariform", "sbt-scalariform",
-      scalariformVersion, "", "", "daniel-trinh/sbt-scalariform").no
+    val scalariform = plugin("org.scalariform", "sbt-scalariform",
+      scalariformVersion, "daniel-trinh/sbt-scalariform").no
 
-    val release = pd("com.github.gseitz", "sbt-release", sbtReleaseVersion,
-      "sbt", "sbt-plugin-releases", "sbt/sbt-release").no
+    val release = plugin("com.github.gseitz", "sbt-release", sbtReleaseVersion,
+      "sbt/sbt-release").no.bintray("sbt", "sbt-plugin-releases")
 
-    val core = ids(tryplug, scalariform, release)
+    val core = ids(tryplug, scalariform, release,
+      "io.argonaut" %% "argonaut" % "+")
 
     val root = ids(tryplug)
   }

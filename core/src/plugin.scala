@@ -90,18 +90,20 @@ with Tryplug
     val huy = "com.hanhuy.sbt"
     val sdkName = "android-sdk-plugin"
     val protifyName = "protify"
+    val dg = "sbt-dependency-graph"
+    val vv = "net.virtual-void"
 
     val tekUserLevel = ids(
-      pd(trypOrg, "tek-core", TekKeys.tekVersion, "tek", "sbt-plugins",
-        "tek-core", "tek/sbt-tek", "core"),
-      pd("org.ensime", "ensime-sbt", ensimeVersion, "", "",
+      plugin(trypOrg, "tek-core", TekKeys.tekVersion, "tek-core",
+        List("tek/sbt-tek", "core")),
+      plugin("org.ensime", "ensime-sbt", ensimeVersion,
         "ensime/ensime-sbt").no,
-      pd("org.scalariform", "sbt-scalariform", scalariformVersion,
-        "joprice", "maven", "daniel-trinh/sbt-scalariform").no,
-      pd("net.virtual-void", "sbt-dependency-graph", depGraphVersion,
-        "jrudolph", "maven", "jrudolph/sbt-dependency-graph").no,
-      pd("com.github.gseitz", "sbt-release", sbtReleaseVersion, "sbt",
-        "sbt-plugin-releases", "sbt/sbt-release").no
+      plugin("org.scalariform", "sbt-scalariform", scalariformVersion,
+        "daniel-trinh/sbt-scalariform").no,
+      plugin(vv, dg, depGraphVersion, s"jrudolph/$dg").no
+        .bintray("bintray", "jcenter", s"$vv:$dg"),
+      plugin("com.github.gseitz", "sbt-release", sbtReleaseVersion,
+        "sbt/sbt-release").no.bintray("sbt", "sbt-plugin-releases")
     )
   }
 
