@@ -40,7 +40,7 @@ with Tryplug
       "core" → core
     )
 
-    val tryplug = plugin("tryp.sbt", "tryplug", tryplugVersion, 
+    val tryplug = plugin("tryp.sbt", "tryplug", tryplugVersion,
       "tek/tryplug", List("tryplug", "macros")).bintray("tek", "sbt-plugins")
 
     val scalariform = plugin("org.scalariform", "sbt-scalariform",
