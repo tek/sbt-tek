@@ -96,12 +96,12 @@ with Tryplug
       plugin(trypOrg, "tek-core", TekKeys.tekVersion, "tek-core",
         List("tek/sbt-tek", "core")).bintray("tek"),
       plugin("org.ensime", "ensime-sbt", ensimeVersion,
-        "ensime/ensime-sbt").no,
+        "ensime/ensime-sbt"),
       plugin("org.scalariform", "sbt-scalariform", scalariformVersion,
-        "daniel-trinh/sbt-scalariform").no.maven,
-      plugin(vv, dg, depGraphVersion, s"jrudolph/$dg").no.maven,
+        "daniel-trinh/sbt-scalariform").maven,
+      plugin(vv, dg, depGraphVersion, s"jrudolph/$dg").maven,
       plugin("com.github.gseitz", "sbt-release", sbtReleaseVersion,
-        "sbt/sbt-release").no.bintray("sbt", "sbt-plugin-releases")
+        "sbt/sbt-release").bintray("sbt", "sbt-plugin-releases")
     )
   }
 
