@@ -88,9 +88,6 @@ with Tryplug
       tekUserLevelName → tekUserLevel
     )
 
-    val huy = "com.hanhuy.sbt"
-    val sdkName = "android-sdk-plugin"
-    val protifyName = "protify"
     val dg = "sbt-dependency-graph"
     val vv = "net.virtual-void"
 
