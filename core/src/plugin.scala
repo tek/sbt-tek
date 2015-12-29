@@ -55,7 +55,7 @@ object TekUserLevel
 extends AutoPlugin
 with Tryplug
 {
-  override def requires = UserLevel
+  override def requires = UserLevel && android.protify.Plugin
 
   val autoImport = TekKeys
 
