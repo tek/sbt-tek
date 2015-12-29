@@ -61,14 +61,8 @@ with Tryplug
 
   def tekUserLevelName = "tek-user-level"
 
-  def updateTekVersion = Def.task {
-    implicit val log = streams.value.log
-    val updater = new Versions {
-      def projectDir = Some(baseDirectory.value / "project")
-    }
-    updater.update(
-      bintraySpec("tek", "sbt-plugins", "tek-core", TekKeys.tekVersion))
-  }
+  lazy val updateTekVersion =
+    projectUpdater("tek", "sbt-plugins", "tek-core", TekKeys.tekVersion)
 
   def pulsar = "nexus.ternarypulsar.com"
 
