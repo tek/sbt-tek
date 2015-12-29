@@ -32,7 +32,8 @@ with Tryplug
     super.projectSettings ++ Seq(
       scalariformFormat in Compile := Nil,
       scalariformFormat in Test := Nil,
-      releaseProc
+      releaseProc,
+      android.Keys.updateCheck in android.protify.Keys.Protify := ()
     )
 
   def releaseProc = {
