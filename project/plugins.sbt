@@ -14,3 +14,11 @@ libraryDependencies += Defaults.sbtPluginExtra(
   (sbtBinaryVersion in update).value,
   (scalaBinaryVersion in update).value
 )
+
+val pattern = "[organisation]/[module]/[revision]/[artifact]-[revision]" +
+  "(-[timestamp]).[ext]"
+
+val nexusUri = "https://nexus.ternarypulsar.com/nexus/content/repositories"
+
+resolvers += 
+  Resolver.url("pulsar", url(s"$nexusUri/releases"))(Patterns(pattern))
