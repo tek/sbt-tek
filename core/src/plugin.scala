@@ -90,7 +90,7 @@ with Tryplug
       plugin(trypOrg, "tek-core", TekKeys.tekVersion, "tek-core",
         List("tek/sbt-tek", "core")).bintray("tek"),
       plugin("org.ensime", "ensime-sbt", ensimeVersion,
-        "ensime/ensime-sbt"),
+        "ensime/ensime-sbt").maven,
       plugin("org.scalariform", "sbt-scalariform", scalariformVersion,
         "daniel-trinh/sbt-scalariform").maven,
       plugin(vv, dg, depGraphVersion, s"jrudolph/$dg").maven,
