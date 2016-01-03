@@ -3,7 +3,6 @@ package tryp
 import sbt._
 import sbt.Keys._
 
-
 import TrypKeys._
 import VersionUpdateKeys._
 
@@ -30,22 +29,18 @@ with Tryplug
   lazy val root = pluginProject("root")
     .aggregate(core)
 
-  lazy val pulsar = "nexus.ternarypulsar.com"
-
-  lazy val nexus = nexusUri(pulsar)
-
-  val nexusPat = "[organisation]/[module]/[revision]/[artifact]-[revision]" +
-    "(-[timestamp]).[ext]"
+  lazy val nexus = nexusUri("nexus.ternarypulsar.com")
 
   lazy val pulsarResolvers = List("snapshots", "releases").map { tpe ⇒
     Resolver.url(s"pulsar $tpe", url(s"$nexus/$tpe"))(
-      Patterns(nexusPat))
+      Patterns(nexusPattern))
   }
 
   object TekDeps
   extends PluginDeps
   {
     override def deps = super.deps ++ Map(
+      "root" → core,
       "core" → core
     )
 
@@ -60,8 +55,6 @@ with Tryplug
       "sbt/sbt-release").no.bintray("sbt", "sbt-plugin-releases")
 
     val core = ids(tryplug, scalariform, release)
-
-    val root = ids(tryplug)
   }
 
   override def deps = TekDeps
