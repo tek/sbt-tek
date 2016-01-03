@@ -60,17 +60,13 @@ with Tryplug
 
   def tekUserLevelName = "tek-user-level"
 
-  lazy val updateTekVersion =
-    projectUpdater("tek", "sbt-plugins", "tryp.sbt", "tek-core",
-      TekKeys.tekVersion)
-
   def pulsar = "nexus.ternarypulsar.com"
 
   override def projectSettings =
     super.projectSettings ++ deps(tekUserLevelName) ++
     deps.pluginVersions(tekUserLevelName) ++ Seq(
       VersionUpdateKeys.autoUpdateVersions := true,
-      update <<= update dependsOn updateTekVersion,
+      VersionUpdateKeys.updateAllPlugins := true,
       resolvers ++= List("snapshots", "releases").map { tpe ⇒
         s"pulsar $tpe" at s"${nexusUri(pulsar)}/$tpe"
       }
