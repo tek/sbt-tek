@@ -60,10 +60,9 @@ with Tryplug
       scalariformVersion, "daniel-trinh/sbt-scalariform").no
 
     val release = plugin("com.github.gseitz", "sbt-release", sbtReleaseVersion,
-      "sbt/sbt-release").no.bintray("sbt", "sbt-plugin-releases").no
+      "sbt/sbt-release").no.bintray("sbt", "sbt-plugin-releases")
 
-    val core = ids(tryplug, protify, scalariform, release,
-      "io.argonaut" %% "argonaut" % "+")
+    val core = ids(tryplug, scalariform, release)
 
     val root = ids(tryplug)
   }

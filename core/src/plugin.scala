@@ -32,8 +32,7 @@ with Tryplug
     super.projectSettings ++ Seq(
       scalariformFormat in Compile := Nil,
       scalariformFormat in Test := Nil,
-      releaseProc,
-      android.Keys.updateCheck in android.protify.Keys.Protify := ()
+      releaseProc
     )
 
   def releaseProc = {
@@ -55,14 +54,15 @@ object TekUserLevel
 extends AutoPlugin
 with Tryplug
 {
-  override def requires = UserLevel && android.protify.Plugin
+  override def requires = UserLevel
 
   val autoImport = TekKeys
 
   def tekUserLevelName = "tek-user-level"
 
   lazy val updateTekVersion =
-    projectUpdater("tek", "sbt-plugins", "tek-core", TekKeys.tekVersion)
+    projectUpdater("tek", "sbt-plugins", "tryp.sbt", "tek-core",
+      TekKeys.tekVersion)
 
   def pulsar = "nexus.ternarypulsar.com"
 
