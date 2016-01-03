@@ -21,6 +21,8 @@ with Tryplug
     resolvers ++= pulsarResolvers
   )
 
+  def tryplugVersion = TrypKeys.tryplugVersion
+
   lazy val core = pluginSubProject("core")
     .settings(
       name := "tek-core"
