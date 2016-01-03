@@ -8,9 +8,3 @@ libraryDependencies += Defaults.sbtPluginExtra(
   (sbtBinaryVersion in update).value,
   (scalaBinaryVersion in update).value
 )
-
-libraryDependencies += Defaults.sbtPluginExtra(
-  "org.scalariform" % "sbt-scalariform" % P.scalariformVersion.value,
-  (sbtBinaryVersion in update).value,
-  (scalaBinaryVersion in update).value
-)

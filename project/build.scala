@@ -3,7 +3,6 @@ package tryp
 import sbt._
 import sbt.Keys._
 
-import com.typesafe.sbt.SbtScalariform.autoImport._
 
 import TrypKeys._
 import VersionUpdateKeys._
@@ -25,8 +24,6 @@ with Tryplug
 
   lazy val core = pluginSubProject("core")
     .settings(
-      scalariformFormat in Compile := Nil,
-      scalariformFormat in Test := Nil,
       name := "tek-core"
     )
 
