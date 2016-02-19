@@ -17,9 +17,7 @@ object TekBuild
 extends sbt.Build
 with Tryplug
 {
-  override def settings = super.settings ++ pluginVersionDefaults ++ Seq(
-    resolvers ++= pulsarResolvers
-  )
+  override def settings = super.settings ++ pluginVersionDefaults
 
   def tryplugVersion = TrypKeys.tryplugVersion
 
@@ -31,23 +29,12 @@ with Tryplug
   lazy val root = pluginProject("root")
     .aggregate(core)
 
-  lazy val nexus = nexusUri("nexus.ternarypulsar.com")
-
-  lazy val pulsarResolvers = List("snapshots", "releases").map { tpe ⇒
-    Resolver.url(s"pulsar $tpe", url(s"$nexus/$tpe"))(
-      Patterns(nexusPattern))
-  }
-
   object TekDeps
   extends PluginDeps
   {
     override def deps = super.deps ++ Map(
       "root" → core,
       "core" → core
-    )
-
-    override def resolvers = super.resolvers ++ Map(
-      "core" → pulsarResolvers
     )
 
     val scalariform = plugin("org.scalariform", "sbt-scalariform",
