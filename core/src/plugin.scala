@@ -32,7 +32,8 @@ with Tryplug
     super.projectSettings ++ Seq(
       scalariformFormat in Compile := Nil,
       scalariformFormat in Test := Nil,
-      releaseProc
+      releaseProc,
+      resolvers ++= pulsarResolvers
     )
 
   def releaseProc = {
@@ -48,6 +49,13 @@ with Tryplug
       pushChanges
     )
   }
+
+  def nexusPulsar = "nexus.ternarypulsar.com"
+
+  lazy val pulsarResolvers = List("snapshots", "releases").map { tpe ⇒
+    Resolver.url(s"pulsar $tpe", url(s"${nexusUri(nexusPulsar)}/$tpe"))(
+      Patterns(nexusPattern))
+  }
 }
 
 object TekUserLevel
@@ -60,16 +68,11 @@ with Tryplug
 
   def tekUserLevelName = "tek-user-level"
 
-  def pulsar = "nexus.ternarypulsar.com"
-
   override def projectSettings =
     super.projectSettings ++ deps(tekUserLevelName) ++
     deps.pluginVersions(tekUserLevelName) ++ Seq(
       VersionUpdateKeys.autoUpdateVersions := true,
-      VersionUpdateKeys.updateAllPlugins := true,
-      resolvers ++= List("snapshots", "releases").map { tpe ⇒
-        s"pulsar $tpe" at s"${nexusUri(pulsar)}/$tpe"
-      }
+      VersionUpdateKeys.updateAllPlugins := true
     )
 
   object TekDeps
