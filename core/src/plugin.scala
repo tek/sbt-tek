@@ -33,7 +33,11 @@ with Tryplug
       scalariformFormat in Compile := Nil,
       scalariformFormat in Test := Nil,
       releaseProc,
-      resolvers ++= pulsarResolvers
+      resolvers ++= pulsarResolvers,
+      publishTo := publishTo.value orElse {
+        val repo = if (isSnapshot.value) "snapshots" else "releases"
+        Some(repo at s"$pulsarUri/$repo")
+      }
     )
 
   def releaseProc = {
@@ -52,8 +56,10 @@ with Tryplug
 
   def nexusPulsar = "nexus.ternarypulsar.com"
 
+  def pulsarUri = nexusUri(nexusPulsar)
+
   lazy val pulsarResolvers = List("snapshots", "releases").map { tpe ⇒
-    Resolver.url(s"pulsar $tpe", url(s"${nexusUri(nexusPulsar)}/$tpe"))(
+    Resolver.url(s"pulsar $tpe", url(s"$pulsarUri/$tpe"))(
       Patterns(nexusPattern))
   }
 }
