@@ -21,6 +21,8 @@ with Tryplug
 
   def tryplugVersion = TrypKeys.tryplugVersion
 
+  def sbtReleaseVersion = TekBuildKeys.sbtReleaseVersion
+
   lazy val core = pluginSubProject("core")
     .settings(
       name := "tek-core"
@@ -28,6 +30,11 @@ with Tryplug
 
   lazy val root = pluginProject("root")
     .aggregate(core)
+    .settings(
+      handlePrefixMap := handlePrefixMap.value ++ List(
+        baseDirectory.value -> "tryp.TekBuildKeys."
+        )
+      )
 
   object TekDeps
   extends PluginDeps
