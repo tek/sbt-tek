@@ -40,8 +40,8 @@ with Tryplug
   extends PluginDeps
   {
     override def deps = super.deps ++ Map(
-      "root" → core,
-      "core" → core
+      "root" -> core,
+      "core" -> core
     )
 
     val scalariform = plugin("org.scalariform", "sbt-scalariform",

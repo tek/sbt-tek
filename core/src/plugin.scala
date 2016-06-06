@@ -58,7 +58,7 @@ with Tryplug
 
   def pulsarUri = nexusUri(nexusPulsar)
 
-  lazy val pulsarResolvers = List("snapshots", "releases").map { tpe ⇒
+  lazy val pulsarResolvers = List("snapshots", "releases").map { tpe =>
     Resolver.url(s"pulsar $tpe", url(s"$pulsarUri/$tpe"))(
       Patterns(nexusPattern))
   }
@@ -85,7 +85,7 @@ with Tryplug
   extends PluginDeps
   {
     override def deps = super.deps ++ Map(
-      tekUserLevelName → tekUserLevel
+      tekUserLevelName -> tekUserLevel
     )
 
     val dg = "sbt-dependency-graph"
