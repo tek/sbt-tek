@@ -30,11 +30,6 @@ with Tryplug
 
   lazy val root = pluginProject("root")
     .aggregate(core)
-    .settings(
-      handlePrefixMap := handlePrefixMap.value ++ List(
-        baseDirectory.value -> "tryp.TekBuildKeys."
-        )
-      )
 
   object TekDeps
   extends PluginDeps
