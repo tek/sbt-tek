@@ -33,6 +33,7 @@ with Tryplug
       scalariformFormat in Compile := Nil,
       scalariformFormat in Test := Nil,
       releaseProc,
+      releaseIgnoreUntrackedFiles := true,
       resolvers ++= pulsarResolvers,
       publishTo := publishTo.value orElse {
         val repo = if (isSnapshot.value) "snapshots" else "releases"
@@ -46,8 +47,8 @@ with Tryplug
       runTest,
       setReleaseVersion,
       commitReleaseVersion,
-      tagRelease,
       publishArtifacts,
+      tagRelease,
       setNextVersion,
       commitNextVersion,
       pushChanges
