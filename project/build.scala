@@ -3,6 +3,9 @@ package tryp
 import sbt._
 import sbt.Keys._
 
+import sbtrelease.ReleasePlugin.autoImport.releaseVersionBump
+import sbtrelease.Version.Bump
+
 import TrypKeys._
 import VersionUpdateKeys._
 
@@ -29,6 +32,7 @@ with Tryplug
     )
 
   lazy val root = pluginProject("root")
+    .settings(releaseVersionBump := Bump.Major)
     .aggregate(core)
 
   object TekDeps
