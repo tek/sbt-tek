@@ -7,6 +7,7 @@ import com.typesafe.sbt.SbtScalariform.autoImport._
 
 import sbtrelease.ReleasePlugin.autoImport._
 import ReleaseTransformations._
+import sbtrelease.Version.Bump
 
 object TekKeys
 {
@@ -28,6 +29,8 @@ with Tryplug
 
   val autoImport = TekKeys
 
+  def majorPlugins = List("tryp", "tryplug", "tek")
+
   override def projectSettings =
     super.projectSettings ++ Seq(
       scalariformFormat in Compile := Nil,
@@ -38,6 +41,10 @@ with Tryplug
       publishTo := publishTo.value orElse {
         val repo = if (isSnapshot.value) "snapshots" else "releases"
         Some(repo at s"$pulsarUri/$repo")
+      },
+      releaseVersionBump := {
+        if (majorPlugins.contains(name.value)) Bump.Major
+        else Bump.Next
       }
     )
 
