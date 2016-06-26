@@ -59,9 +59,12 @@ with Tryplug
 
   def pulsarUri = nexusUri(nexusPulsar)
 
-  lazy val pulsarResolvers = List("snapshots", "releases").map { tpe =>
-    Resolver.url(s"pulsar $tpe", url(s"$pulsarUri/$tpe"))(
-      Patterns(nexusPattern))
+  lazy val pulsarResolvers = List("snapshots", "releases").flatMap { tpe =>
+    List(true, false) map { maven =>
+      val desc = s"${if (maven) "" else "no "}maven"
+      Resolver.url(s"pulsar $tpe ($desc)", url(s"$pulsarUri/$tpe"))(
+        Patterns(maven, nexusPattern))
+    }
   }
 }
 
