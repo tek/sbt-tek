@@ -54,14 +54,12 @@ with Tryplug
   def releaseProc = {
     releaseProcess := Seq[ReleaseStep](
       inquireVersions,
-      runTest,
       setReleaseVersion,
       commitReleaseVersion,
       publishArtifacts,
       tagRelease,
       setNextVersion,
-      commitNextVersion,
-      pushChanges
+      commitNextVersion
     )
   }
 
