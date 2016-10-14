@@ -9,6 +9,8 @@ import sbtrelease.ReleasePlugin.autoImport._
 import ReleaseTransformations._
 import sbtrelease.Version.Bump
 
+import coursier.Keys._
+
 object TekKeys
 {
   import TrypKeys.Tryp
@@ -45,7 +47,8 @@ with Tryplug
       releaseVersionBump := {
         if (majorPlugins.contains(name.value)) Bump.Major
         else Bump.Next
-      }
+      },
+      coursierUseSbtCredentials := true
     )
 
   def releaseProc = {
