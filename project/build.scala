@@ -28,11 +28,16 @@ with Tryplug
 
   lazy val core = pluginSubProject("core")
     .settings(
+      useCoursier := true,
       name := "tek-core"
     )
 
   lazy val root = pluginProject("root")
     .settings(releaseVersionBump := Bump.Major)
+    .settings(
+      useCoursier := true,
+      VersionUpdateKeys.updatePluginsExclude += "sbt-coursier"
+    )
     .aggregate(core)
 
   object TekDeps
@@ -49,7 +54,7 @@ with Tryplug
     val release = plugin("com.github.gseitz", "sbt-release", sbtReleaseVersion,
       "sbt/sbt-release").no.bintray("sbt", "sbt-plugin-releases")
 
-    val core = ids(tryplug, scalariform, release, coursier.copy(cond = None))
+    val core = ids(tryplug, scalariform, release, coursier)
   }
 
   override def deps = TekDeps

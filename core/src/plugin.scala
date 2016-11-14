@@ -38,6 +38,7 @@ with Tryplug
       scalariformFormat in Compile := Nil,
       scalariformFormat in Test := Nil,
       releaseProc,
+      coursierUseSbtCredentials := true,
       releaseIgnoreUntrackedFiles := true,
       resolvers ++= pulsarResolvers,
       publishTo := publishTo.value orElse {
@@ -47,8 +48,7 @@ with Tryplug
       releaseVersionBump := {
         if (majorPlugins.contains(name.value)) Bump.Major
         else Bump.Next
-      },
-      coursierUseSbtCredentials := true
+      }
     )
 
   def releaseProc = {
