@@ -106,8 +106,8 @@ with Tryplug
     val tekUserLevel = ids(
       plugin(trypOrg, "tek-core", TekKeys.tekVersion, "tek-core",
         List("tek/sbt-tek", "core")).bintray("tek"),
-      plugin("org.ensime", "sbt-ensime", ensimeVersion,
-        "ensime/ensime-sbt").maven,
+      // plugin("org.ensime", "sbt-ensime", ensimeVersion,
+      //   "ensime/ensime-sbt").maven,
       plugin("org.scalariform", "sbt-scalariform", scalariformVersion,
         "daniel-trinh/sbt-scalariform").maven,
       plugin(vv, dg, depGraphVersion, s"jrudolph/$dg").maven,
