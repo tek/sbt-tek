@@ -24,8 +24,6 @@ with Tryplug
 
   def tryplugVersion = TrypKeys.tryplugVersion
 
-  def sbtReleaseVersion = TekBuildKeys.sbtReleaseVersion
-
   lazy val core = pluginSubProject("core")
     .settings(
       useCoursier := true,
