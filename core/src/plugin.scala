@@ -86,11 +86,18 @@ with Tryplug
 
   def tekUserLevelName = "tek-user-level"
 
+  import VersionUpdateKeys._
+
   override def projectSettings =
     super.projectSettings ++ deps(tekUserLevelName) ++
     deps.pluginVersions(tekUserLevelName) ++ Seq(
-      VersionUpdateKeys.autoUpdateVersions := true,
-      VersionUpdateKeys.updateAllPlugins := true
+      autoUpdateVersions := true,
+      updateAllPlugins := true,
+      versionDirMap ++= {
+        val d = projectDir.value
+        val dirs = List(d, d / "project")
+        Map("tekVersion" -> dirs)
+      }
     )
 
   object TekDeps
