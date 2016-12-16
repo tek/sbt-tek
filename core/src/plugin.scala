@@ -19,6 +19,7 @@ object TekKeys
   val scalariformVersion = settingKey[String]("scalariform version") in Tryp
   val depGraphVersion = settingKey[String]("dependency-graph version") in Tryp
   val sbtReleaseVersion = settingKey[String]("release version") in Tryp
+  val sbtAmmoniteVersion = settingKey[String]("ammonite version") in Tryp
 }
 import TekKeys._
 
@@ -86,10 +87,14 @@ with Tryplug
 
   def tekUserLevelName = "tek-user-level"
 
+  override def pluginVersionDefaults = super.pluginVersionDefaults ++ List(
+    propVersion(sbtAmmoniteVersion, "ammonite", "0.1.0")
+  )
+
   import VersionUpdateKeys._
 
   override def projectSettings =
-    super.projectSettings ++ deps(tekUserLevelName) ++
+    super.projectSettings ++ deps(tekUserLevelName) ++ pluginVersionDefaults ++
     deps.pluginVersions(tekUserLevelName) ++ Seq(
       autoUpdateVersions := true,
       updateAllPlugins := true,
@@ -119,7 +124,9 @@ with Tryplug
         "daniel-trinh/sbt-scalariform").maven,
       plugin(vv, dg, depGraphVersion, s"jrudolph/$dg").maven,
       plugin("com.github.gseitz", "sbt-release", sbtReleaseVersion,
-        "sbt/sbt-release").bintray("sbt", "sbt-plugin-releases")
+        "sbt/sbt-release").bintray("sbt", "sbt-plugin-releases"),
+      plugin("com.github.alexarchambault", "sbt-ammonite", sbtAmmoniteVersion,
+        "alexarchambault/sbt-ammonite").maven
     )
   }
 
