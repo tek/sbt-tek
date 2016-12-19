@@ -71,8 +71,6 @@ object AmmonitePlugin extends AutoPlugin {
 
       libraryDependencies += "com.lihaoyi" %% "ammonite" % ammoniteVersion.value cross CrossVersion.full,
 
-      ivyScala := ivyScala.value map { _.copy(overrideScalaVersion = true) },
-
       configuration := underlyingConf,
 
       /* Overriding run and runMain defined by compileSettings so that they use fullClasspath of this scope (Ammonite),
