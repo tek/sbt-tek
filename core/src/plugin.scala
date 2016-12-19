@@ -1,7 +1,10 @@
 package tryp
 
+import java.nio.file.Paths
+
 import sbt._
 import Keys._
+import xsbti.{Position, Maybe}
 
 import com.typesafe.sbt.SbtScalariform.autoImport._
 
@@ -34,6 +37,25 @@ with Tryplug
 
   def majorPlugins = List("tryp", "tryplug", "tek")
 
+  def posMapper(base: String)(pos: Position) = {
+    val sourcePath =
+      if (pos.sourcePath.isDefined) Some(pos.sourcePath.get)
+      else None
+    sourcePath.flatMap { sp =>
+      val relative = Paths.get(base).relativize(Paths.get(sp))
+      if (relative.startsWith("..")) None
+      else Some(new Position {
+          def line = pos.line
+          def lineContent = pos.lineContent
+          def offset = pos.offset
+          def pointer = pos.pointer
+          def pointerSpace = pos.pointerSpace
+          def sourceFile = pos.sourceFile
+          def sourcePath = Maybe.just(relative.toString)
+        })
+    }
+  }
+
   override def projectSettings =
     super.projectSettings ++ Seq(
       scalariformFormat in Compile := Nil,
@@ -49,7 +71,9 @@ with Tryplug
       releaseVersionBump := {
         if (majorPlugins.contains(name.value)) Bump.Major
         else Bump.Next
-      }
+      },
+      sourcePositionMappers +=
+        posMapper((baseDirectory in ThisBuild).value.toString) _
     )
 
   def releaseProc = {
