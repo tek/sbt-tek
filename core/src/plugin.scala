@@ -76,7 +76,9 @@ with Tryplug
         else Bump.Next
       },
       sourcePositionMappers +=
-        posMapper((baseDirectory in ThisBuild).value.toString) _
+        posMapper((baseDirectory in ThisBuild).value.toString) _,
+      resolvers += Resolver.bintrayRepo("tek", "maven"),
+      addCompilerPlugin("tryp" %% "splain" % "0.1.14")
     )
 
   def releaseProc = {
