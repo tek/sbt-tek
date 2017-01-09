@@ -11,6 +11,7 @@ import VersionUpdateKeys._
 
 object TekBuildKeys
 {
+  val ensimeVersion = settingKey[String]("ensime version")
   val scalariformVersion = settingKey[String]("scalariform version")
   val sbtReleaseVersion = settingKey[String]("release version")
 }
@@ -46,13 +47,16 @@ with Tryplug
       "core" -> core
     )
 
+    val ensime = plugin("org.ensime", "sbt-ensime", ensimeVersion,
+      "ensime/ensime-sbt").maven
+
     val scalariform = plugin("org.scalariform", "sbt-scalariform",
       scalariformVersion, "daniel-trinh/sbt-scalariform").no
 
     val release = plugin("com.github.gseitz", "sbt-release", sbtReleaseVersion,
       "sbt/sbt-release").no.bintray("sbt", "sbt-plugin-releases")
 
-    val core = ids(tryplug, scalariform, release, coursier)
+    val core = ids(tryplug, ensime, scalariform, release, coursier)
   }
 
   override def deps = TekDeps
