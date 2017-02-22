@@ -78,7 +78,7 @@ with Tryplug
       sourcePositionMappers +=
         posMapper((baseDirectory in ThisBuild).value.toString) _,
       resolvers += Resolver.bintrayRepo("tek", "maven"),
-      addCompilerPlugin("tryp" %% "splain" % "0.1.20"),
+      addCompilerPlugin("tryp" %% "splain" % "0.1.21"),
       scalacOptions ++= List("-P:splain:bounds", "-P:splain:breakinfix:20")
     )
 
