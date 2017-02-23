@@ -40,22 +40,24 @@ with Tryplug
   def majorPlugins = List("tryp", "tryplug", "tek")
 
   def posMapper(base: String)(pos: Position) = {
-    val sourcePath =
-      if (pos.sourcePath.isDefined) Some(pos.sourcePath.get)
-      else None
-    sourcePath.flatMap { sp =>
-      val relative = Paths.get(base).relativize(Paths.get(sp))
-      if (relative.startsWith("..")) None
-      else Some(new Position {
-          def line = pos.line
-          def lineContent = pos.lineContent
-          def offset = pos.offset
-          def pointer = pos.pointer
-          def pointerSpace = pos.pointerSpace
-          def sourceFile = pos.sourceFile
-          def sourcePath = Maybe.just(relative.toString)
-        })
-    }
+    Try {
+      val sourcePath =
+        if (pos.sourcePath.isDefined) Some(pos.sourcePath.get)
+        else None
+      sourcePath.flatMap { sp =>
+        val relative = Paths.get(base).relativize(Paths.get(sp))
+        if (relative.startsWith("..")) None
+        else Some(new Position {
+            def line = pos.line
+            def lineContent = pos.lineContent
+            def offset = pos.offset
+            def pointer = pos.pointer
+            def pointerSpace = pos.pointerSpace
+            def sourceFile = pos.sourceFile
+            def sourcePath = Maybe.just(relative.toString)
+          })
+      }
+    } getOrElse None
   }
 
   override def projectSettings =
@@ -75,8 +77,7 @@ with Tryplug
         if (majorPlugins.contains(name.value)) Bump.Major
         else Bump.Next
       },
-      sourcePositionMappers +=
-        posMapper((baseDirectory in ThisBuild).value.toString) _,
+      sourcePositionMappers += posMapper((baseDirectory in ThisBuild).value.toString) _,
       resolvers += Resolver.bintrayRepo("tek", "maven"),
       addCompilerPlugin("tryp" %% "splain" % "0.1.21"),
       scalacOptions ++= List("-P:splain:bounds", "-P:splain:breakinfix:20")
