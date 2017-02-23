@@ -2,6 +2,8 @@ package tryp
 
 import java.nio.file.Paths
 
+import util.Try
+
 import sbt._
 import Keys._
 import xsbti.{Position, Maybe}
