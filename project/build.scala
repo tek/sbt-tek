@@ -24,6 +24,8 @@ with Tryplug
   override def settings = super.settings ++ pluginVersionDefaults
 
   def tryplugVersion = TrypKeys.tryplugVersion
+  def ensimeVersion = TekBuildKeys.ensimeVersion
+  def sbtReleaseVersion = TekBuildKeys.sbtReleaseVersion
 
   lazy val core = pluginSubProject("core")
     .settings(
