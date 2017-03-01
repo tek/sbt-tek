@@ -14,6 +14,7 @@ object TekBuildKeys
   val ensimeVersion = settingKey[String]("ensime version")
   val scalariformVersion = settingKey[String]("scalariform version")
   val sbtReleaseVersion = settingKey[String]("release version")
+  val coursierVersion = settingKey[String]("coursier version")
 }
 import TekBuildKeys._
 
@@ -24,8 +25,6 @@ with Tryplug
   override def settings = super.settings ++ pluginVersionDefaults
 
   def tryplugVersion = TrypKeys.tryplugVersion
-  def ensimeVersion = TekBuildKeys.ensimeVersion
-  def sbtReleaseVersion = TekBuildKeys.sbtReleaseVersion
 
   lazy val core = pluginSubProject("core")
     .settings(
@@ -37,7 +36,10 @@ with Tryplug
     .settings(releaseVersionBump := Bump.Major)
     .settings(
       useCoursier := true,
-      VersionUpdateKeys.updatePluginsExclude += "sbt-coursier"
+      VersionUpdateKeys.updatePluginsExclude += "sbt-coursier",
+      handlePrefixMap := Map(
+        baseDirectory.value -> "tryp.TekBuildKeys."
+      )
     )
     .aggregate(core)
 
