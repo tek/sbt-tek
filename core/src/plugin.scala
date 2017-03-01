@@ -83,8 +83,8 @@ with Tryplug
       sourcePositionMappers += posMapper((baseDirectory in ThisBuild).value.toString) _,
       resolvers += Resolver.bintrayRepo("tek", "maven"),
       splain := true,
-      libraryDependencies ++=(if (splain.value) List(compilerPlugin("tryp" %% "splain" % "0.1.21")) else Nil),
-      scalacOptions ++= List("-P:splain:bounds", "-P:splain:breakinfix:20")
+      libraryDependencies ++= (if (splain.value) List(compilerPlugin("tryp" %% "splain" % "0.1.21")) else Nil),
+      scalacOptions ++= (if (splain.value) List("-P:splain:bounds", "-P:splain:breakinfix:20") else Nil)
     )
 
   def releaseProc = {
