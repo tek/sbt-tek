@@ -27,6 +27,7 @@ object TekKeys
   val depGraphVersion = settingKey[String]("dependency-graph version") in Tryp
   val sbtReleaseVersion = settingKey[String]("release version") in Tryp
   val sbtAmmoniteVersion = settingKey[String]("ammonite version") in Tryp
+  val splain = settingKey[Boolean]("use splain") in Tryp
 }
 import TekKeys._
 
@@ -81,7 +82,8 @@ with Tryplug
       },
       sourcePositionMappers += posMapper((baseDirectory in ThisBuild).value.toString) _,
       resolvers += Resolver.bintrayRepo("tek", "maven"),
-      addCompilerPlugin("tryp" %% "splain" % "0.1.21"),
+      splain := true,
+      libraryDependencies ++=(if (splain.value) List(compilerPlugin("tryp" %% "splain" % "0.1.21")) else Nil),
       scalacOptions ++= List("-P:splain:bounds", "-P:splain:breakinfix:20")
     )
 
