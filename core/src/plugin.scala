@@ -9,6 +9,7 @@ import Keys._
 import xsbti.{Position, Maybe}
 
 import org.ensime.EnsimeKeys.ensimeIgnoreMissingDirectories
+import org.ensime.EnsimeCoursierKeys.ensimeServerVersion
 
 import com.typesafe.sbt.SbtScalariform.autoImport._
 
@@ -63,29 +64,32 @@ with Tryplug
     } getOrElse None
   }
 
-  override def projectSettings =
-    super.projectSettings ++ Seq(
-      scalariformFormat in Compile := Nil,
-      scalariformFormat in Test := Nil,
-      releaseProc,
-      ensimeIgnoreMissingDirectories := true,
-      coursierUseSbtCredentials := true,
-      releaseIgnoreUntrackedFiles := true,
-      resolvers ++= pulsarResolvers,
-      publishTo := publishTo.value orElse {
-        val repo = if (isSnapshot.value) "snapshots" else "releases"
-        Some(repo at s"$pulsarUri/$repo")
-      },
-      releaseVersionBump := {
-        if (majorPlugins.contains(name.value)) Bump.Major
-        else Bump.Next
-      },
-      sourcePositionMappers += posMapper((baseDirectory in ThisBuild).value.toString) _,
-      resolvers += Resolver.bintrayRepo("tek", "maven"),
-      splain := true,
-      libraryDependencies ++= (if (splain.value) List(compilerPlugin("tryp" %% "splain" % "0.1.21")) else Nil),
-      scalacOptions ++= (if (splain.value) List("-P:splain:bounds", "-P:splain:breakinfix:20") else Nil)
-    )
+  override def buildSettings = Seq(
+    ensimeServerVersion := "2.0.0-SNAPSHOT"
+  )
+
+  override def projectSettings = Seq(
+    scalariformFormat in Compile := Nil,
+    scalariformFormat in Test := Nil,
+    releaseProc,
+    ensimeIgnoreMissingDirectories := true,
+    coursierUseSbtCredentials := true,
+    releaseIgnoreUntrackedFiles := true,
+    resolvers ++= pulsarResolvers,
+    publishTo := publishTo.value orElse {
+      val repo = if (isSnapshot.value) "snapshots" else "releases"
+      Some(repo at s"$pulsarUri/$repo")
+    },
+    releaseVersionBump := {
+      if (majorPlugins.contains(name.value)) Bump.Major
+      else Bump.Next
+    },
+    sourcePositionMappers += posMapper((baseDirectory in ThisBuild).value.toString) _,
+    resolvers += Resolver.bintrayRepo("tek", "maven"),
+    splain := true,
+    libraryDependencies ++= (if (splain.value) List(compilerPlugin("tryp" %% "splain" % "0.1.21")) else Nil),
+    scalacOptions ++= (if (splain.value) List("-P:splain:bounds", "-P:splain:breakinfix:20") else Nil)
+  )
 
   def releaseProc = {
     releaseProcess := Seq[ReleaseStep](
