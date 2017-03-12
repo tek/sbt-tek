@@ -88,7 +88,7 @@ with Tryplug
     resolvers += Resolver.bintrayRepo("tek", "maven"),
     splain := true,
     libraryDependencies ++= (if (splain.value) List(compilerPlugin("tryp" %% "splain" % "0.1.21")) else Nil),
-    scalacOptions ++= (if (splain.value) List("-P:splain:bounds", "-P:splain:breakinfix:50") else Nil)
+    scalacOptions ++= (if (splain.value) List("-P:splain:bounds", "-P:splain:breakinfix:80") else Nil)
   )
 
   def releaseProc = {
