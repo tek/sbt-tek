@@ -36,7 +36,6 @@ with Tryplug
     .settings(releaseVersionBump := Bump.Major)
     .settings(
       useCoursier := true,
-      VersionUpdateKeys.updatePluginsExclude += "sbt-coursier",
       handlePrefixMap := Map(
         baseDirectory.value -> "tryp.TekBuildKeys."
       )
