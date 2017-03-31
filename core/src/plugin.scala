@@ -29,6 +29,7 @@ object TekKeys
   val sbtReleaseVersion = settingKey[String]("release version") in Tryp
   val sbtAmmoniteVersion = settingKey[String]("ammonite version") in Tryp
   val splain = settingKey[Boolean]("use splain") in Tryp
+  val splainBreakInfix = settingKey[Int]("splain infix line break threshold") in Tryp
 }
 import TekKeys._
 
@@ -87,8 +88,9 @@ with Tryplug
     sourcePositionMappers += posMapper((baseDirectory in ThisBuild).value.toString) _,
     resolvers += Resolver.bintrayRepo("tek", "maven"),
     splain := true,
+    splainBreakInfix := 100,
     libraryDependencies ++= (if (splain.value) List(compilerPlugin("tryp" %% "splain" % "0.1.21")) else Nil),
-    scalacOptions ++= (if (splain.value) List("-P:splain:bounds", "-P:splain:breakinfix:80") else Nil)
+    scalacOptions ++= (if (splain.value) List("-P:splain:bounds", s"-P:splain:breakinfix:$splainBreakInfix") else Nil)
   )
 
   def releaseProc = {
