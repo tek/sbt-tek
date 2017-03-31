@@ -15,6 +15,7 @@ object TekBuildKeys
   val scalariformVersion = settingKey[String]("scalariform version")
   val sbtReleaseVersion = settingKey[String]("release version")
   val coursierVersion = settingKey[String]("coursier version")
+  val tryplugVersion = TrypKeys.tryplugVersion
 }
 import TekBuildKeys._
 
