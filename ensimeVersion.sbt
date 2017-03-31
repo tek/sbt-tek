@@ -1,1 +1,1 @@
-tryp.TekBuildKeys.ensimeVersion in Global := "1.12.7"
+tryp.TekBuildKeys.ensimeVersion in Global := "1.12.9"
