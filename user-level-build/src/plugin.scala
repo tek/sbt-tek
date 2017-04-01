@@ -8,14 +8,22 @@ object TekUserLevelBuild
 extends AutoPlugin
 with Tryplug
 {
-  override def requires = UserLevel
+  override def requires = PluginVersionUpdate
 
-  val autoImport = TekKeys
+  object autoImport
+  {
+    def debugDeps = userLevelDebugDeps
+  }
+
+  def userLevelDebugDeps = {
+    Project(tekUserLevelName, file("."))
+      .settings(pluginVersionDefaults: _*)
+  }
 
   def tekUserLevelName = "tek-user-level"
 
   override def pluginVersionDefaults = super.pluginVersionDefaults ++ List(
-    // propVersion(sbtAmmoniteVersion, "ammonite", "0.1.2")
+    propVersion(sbtAmmoniteVersion, "ammonite", "0.1.2")
   )
 
   import VersionUpdateKeys._
@@ -23,6 +31,7 @@ with Tryplug
   override def projectSettings =
     super.projectSettings ++ deps(tekUserLevelName) ++ pluginVersionDefaults ++
     deps.pluginVersions(tekUserLevelName) ++ Seq(
+      TrypKeys.useCoursier := true,
       autoUpdateVersions := true,
       updateAllPlugins := true,
       versionDirMap ++= {
@@ -43,18 +52,14 @@ with Tryplug
     val vv = "net.virtual-void"
 
     val tekUserLevel = ids(
-      plugin(trypOrg, "tek-user-level", TekKeys.tekVersion, "tek-core",
-        List("tek/sbt-tek", "user-level")).bintray("tek"),
-      plugin("org.ensime", "sbt-ensime", ensimeVersion,
-        "ensime/ensime-sbt").maven,
-      plugin("org.scalariform", "sbt-scalariform", scalariformVersion,
-        "daniel-trinh/sbt-scalariform").maven,
+      coursier,
+      plugin(trypOrg, "tek-user-level", TekKeys.tekVersion, "tek/sbt-tek", List("user-level")).bintray("tek"),
+      plugin("org.ensime", "sbt-ensime", ensimeVersion, "ensime/ensime-sbt").maven,
+      plugin("org.scalariform", "sbt-scalariform", scalariformVersion, "daniel-trinh/sbt-scalariform").maven,
       plugin(vv, dg, depGraphVersion, s"jrudolph/$dg").maven,
-      plugin("com.github.gseitz", "sbt-release", sbtReleaseVersion,
-        "sbt/sbt-release").bintray("sbt", "sbt-plugin-releases")
-      // ,
-      // plugin("com.github.alexarchambault", "sbt-ammonite", sbtAmmoniteVersion,
-      //   "alexarchambault/sbt-ammonite").maven
+      plugin("com.github.gseitz", "sbt-release", sbtReleaseVersion, "sbt/sbt-release")
+        .bintray("sbt", "sbt-plugin-releases"),
+      plugin("com.github.alexarchambault", "sbt-ammonite", sbtAmmoniteVersion, "alexarchambault/sbt-ammonite").maven
     )
   }
 

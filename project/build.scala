@@ -28,16 +28,10 @@ with Tryplug
   def tryplugVersion = TrypKeys.tryplugVersion
 
   lazy val core = pluginSubProject("core")
-    .settings(
-      useCoursier := true,
-      name := "tek-core"
-    )
+    .settings(name := "tek-core")
 
   lazy val userlevelBuild = pluginSubProject("user-level-build")
-    .settings(
-      useCoursier := true,
-      name := "tek-user-level-build"
-    )
+    .settings(name := "tek-user-level-build")
     .dependsOn(core)
 
   lazy val userlevel = pluginSubProject("user-level")
@@ -50,7 +44,7 @@ with Tryplug
   lazy val root = pluginProject("root")
     .settings(releaseVersionBump := Bump.Major)
     .settings(
-      useCoursier := true,
+      useCoursier := false,
       handlePrefixMap := Map(
         baseDirectory.value -> "tryp.TekBuildKeys."
       )
@@ -61,8 +55,9 @@ with Tryplug
   extends PluginDeps
   {
     override def deps = super.deps ++ Map(
-      "root" -> core,
-      "core" -> core
+      "root" -> userlevel,
+      "core" -> core,
+      "user-level" -> userlevel
     )
 
     val ensime = plugin("org.ensime", "sbt-ensime", ensimeVersion,
@@ -74,7 +69,9 @@ with Tryplug
     val release = plugin("com.github.gseitz", "sbt-release", sbtReleaseVersion,
       "sbt/sbt-release").no.bintray("sbt", "sbt-plugin-releases")
 
-    val core = ids(tryplug, ensime, scalariform, release, coursier)
+    val core = ids(tryplug)
+
+    val userlevel = ids(ensime, scalariform, release, coursier)
   }
 
   override def deps = TekDeps
