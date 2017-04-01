@@ -81,7 +81,10 @@ with Tryplug
     splain := true,
     splainBreakInfix := 100,
     libraryDependencies ++= (if (splain.value) List(compilerPlugin("tryp" %% "splain" % "0.1.21")) else Nil),
-    scalacOptions ++= (if (splain.value) List("-P:splain:bounds", s"-P:splain:breakinfix:$splainBreakInfix") else Nil)
+    scalacOptions ++= (
+      if (splain.value) List("-P:splain:bounds", s"-P:splain:breakinfix:${splainBreakInfix.value}")
+      else Nil
+    )
   )
 
   def releaseProc = {
