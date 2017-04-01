@@ -31,6 +31,7 @@ with Tryplug
   override def projectSettings =
     super.projectSettings ++ deps(tekUserLevelName) ++ pluginVersionDefaults ++
     deps.pluginVersions(tekUserLevelName) ++ Seq(
+      bintrayTekResolver,
       TrypKeys.useCoursier := true,
       autoUpdateVersions := true,
       updateAllPlugins := true,
