@@ -28,8 +28,6 @@ with Tryplug
   override def requires = plugins.JvmPlugin
   override def trigger = allRequirements
 
-  val autoImport = TekKeys
-
   def majorPlugins = List("tryp", "tryplug", "tek")
 
   def posMapper(base: String)(pos: Position) = {
