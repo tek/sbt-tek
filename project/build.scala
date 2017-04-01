@@ -33,6 +33,13 @@ with Tryplug
       name := "tek-core"
     )
 
+  lazy val userlevelBuild = pluginSubProject("user-level-build")
+    .settings(
+      useCoursier := true,
+      name := "tek-user-level-build"
+    )
+    .dependsOn(core)
+
   lazy val userlevel = pluginSubProject("user-level")
     .settings(
       useCoursier := true,
@@ -48,7 +55,7 @@ with Tryplug
         baseDirectory.value -> "tryp.TekBuildKeys."
       )
     )
-    .aggregate(core, userlevel)
+    .aggregate(core, userlevel, userlevelBuild)
 
   object TekDeps
   extends PluginDeps
