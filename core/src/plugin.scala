@@ -157,8 +157,8 @@ with Tryplug
     val vv = "net.virtual-void"
 
     val tekUserLevel = ids(
-      plugin(trypOrg, "tek-core", TekKeys.tekVersion, "tek-core",
-        List("tek/sbt-tek", "core")).bintray("tek"),
+      plugin(trypOrg, "tek-user-level", TekKeys.tekVersion, "tek-core",
+        List("tek/sbt-tek", "user-level")).bintray("tek"),
       plugin("org.ensime", "sbt-ensime", ensimeVersion,
         "ensime/ensime-sbt").maven,
       plugin("org.scalariform", "sbt-scalariform", scalariformVersion,
