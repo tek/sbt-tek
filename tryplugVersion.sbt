@@ -1,1 +1,1 @@
-tryp.TekBuildKeys.tryplugVersion in Global := "82.0.0"
+tryp.TekBuildKeys.tryplugVersion in Global := "83.0.0"
