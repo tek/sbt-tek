@@ -8,8 +8,7 @@ import sbt._
 import Keys._
 import xsbti.{Position, Maybe}
 
-import org.ensime.EnsimeKeys.ensimeIgnoreMissingDirectories
-import org.ensime.EnsimeCoursierKeys.ensimeServerVersion
+import org.ensime.EnsimeKeys.{ensimeIgnoreMissingDirectories, ensimeServerVersion}
 
 import com.typesafe.sbt.SbtScalariform.autoImport._
 
