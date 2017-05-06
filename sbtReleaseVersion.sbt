@@ -1,1 +1,1 @@
-tryp.TekBuildKeys.sbtReleaseVersion in Global := "1.0.4"
+tryp.TekBuildKeys.sbtReleaseVersion in Global := "1.0.5"
