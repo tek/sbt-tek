@@ -29,18 +29,22 @@ with Tryplug
   import VersionUpdateKeys._
 
   override def projectSettings =
-    super.projectSettings ++ deps(tekUserLevelName) ++ pluginVersionDefaults ++
-    deps.pluginVersions(tekUserLevelName) ++ Seq(
-      bintrayTekResolver,
-      TrypKeys.useCoursier := true,
-      autoUpdateVersions := true,
-      updateAllPlugins := true,
-      versionDirMap ++= {
-        val d = projectDir.value
-        val dirs = List(d, d / "project")
-        Map("tekVersion" -> dirs)
-      }
-    )
+    super.projectSettings ++
+      deps(tekUserLevelName) ++
+      pluginVersionDefaults ++
+      deps.pluginVersions(tekUserLevelName) ++
+      Seq(
+        bintrayTekResolver,
+        TrypKeys.useCoursier := true,
+        autoUpdateVersions := true,
+        updateAllPlugins := true,
+        updatePluginsExclude += "sbt-coursier",
+        versionDirMap ++= {
+          val d = projectDir.value
+          val dirs = List(d, d / "project")
+          Map("tekVersion" -> dirs)
+        }
+      )
 
   object TekDeps
   extends PluginDeps
