@@ -26,8 +26,6 @@ trait TekKeys
   val splain = TekKeys.splain
   val splainBreakInfix = TekKeys.splainBreakInfix
   val coursierVersion = TrypKeys.coursierVersion
-  val protifyVersion = TrypKeys.protifyVersion
-  val sdkVersion = TrypKeys.sdkVersion
 }
 
 object GlobalKeysPlug
