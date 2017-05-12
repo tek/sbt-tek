@@ -3,7 +3,7 @@ package tryp
 import sbt._
 import sbt.Keys._
 
-import sbtrelease.ReleasePlugin.autoImport.releaseVersionBump
+import sbtrelease.ReleasePlugin.autoImport.{releaseVersionBump, releaseIgnoreUntrackedFiles}
 import sbtrelease.Version.Bump
 
 import TrypKeys._
@@ -28,7 +28,9 @@ with Tryplug
   def tryplugVersion = TrypKeys.tryplugVersion
 
   lazy val core = pluginSubProject("core")
-    .settings(name := "tek-core")
+    .settings(
+      name := "tek-core"
+    )
 
   lazy val userlevelBuild = pluginSubProject("user-level-build")
     .settings(name := "tek-user-level-build")
@@ -42,8 +44,9 @@ with Tryplug
     .dependsOn(core)
 
   lazy val root = pluginProject("root")
-    .settings(releaseVersionBump := Bump.Major)
     .settings(
+      releaseVersionBump := Bump.Major,
+      releaseIgnoreUntrackedFiles := true,
       useCoursier := false,
       handlePrefixMap := Map(
         baseDirectory.value -> "tryp.TekBuildKeys."
