@@ -60,14 +60,14 @@ with Tryplug
       "user-level" -> userlevel
     )
 
-    val ensime = plugin("org.ensime", "sbt-ensime", ensimeVersion,
-      "ensime/ensime-sbt").maven
+    val ensime = plugin("org.ensime", "sbt-ensime", ensimeVersion, "ensime/ensime-sbt").maven
 
-    val scalariform = plugin("org.scalariform", "sbt-scalariform",
-      scalariformVersion, "daniel-trinh/sbt-scalariform").no
+    val scalariform =
+      plugin("org.scalariform", "sbt-scalariform", scalariformVersion, "daniel-trinh/sbt-scalariform").no
 
-    val release = plugin("com.github.gseitz", "sbt-release", sbtReleaseVersion,
-      "sbt/sbt-release").no.bintray("sbt", "sbt-plugin-releases")
+    val release = plugin("com.github.gseitz", "sbt-release", sbtReleaseVersion, "sbt/sbt-release")
+      .no
+      .bintray("sbt", "sbt-plugin-releases")
 
     val core = ids(tryplug)
 
