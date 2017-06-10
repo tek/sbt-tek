@@ -77,7 +77,7 @@ with Tryplug
     resolvers += Resolver.bintrayRepo("tek", "maven"),
     splain := true,
     splainBreakInfix := 100,
-    libraryDependencies ++= (if (splain.value) List(compilerPlugin("io.tryp" %% "splain" % "0.2.0")) else Nil),
+    libraryDependencies ++= (if (splain.value) List(compilerPlugin("io.tryp" %% "splain" % "0.2.1")) else Nil),
     scalacOptions ++= (
       if (splain.value) List("-P:splain:bounds", s"-P:splain:breakinfix:${splainBreakInfix.value}")
       else Nil
