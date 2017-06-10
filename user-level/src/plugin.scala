@@ -79,7 +79,13 @@ with Tryplug
     splainBreakInfix := 100,
     libraryDependencies ++= (if (splain.value) List(compilerPlugin("io.tryp" %% "splain" % "0.2.2")) else Nil),
     scalacOptions ++= (
-      if (splain.value) List("-P:splain:bounds", s"-P:splain:breakinfix:${splainBreakInfix.value}")
+      if (splain.value)
+        List(
+          "-P:splain:bounds",
+          s"-P:splain:breakinfix:${splainBreakInfix.value}",
+          "-P:splain:boundsimplicits:false",
+          "-P:splain:compact"
+        )
       else Nil
     )
   )
