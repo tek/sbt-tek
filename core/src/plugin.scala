@@ -13,6 +13,8 @@ object TekKeys
   val sbtAmmoniteVersion = settingKey[String]("ammonite version") in Tryp
   val splain = settingKey[Boolean]("use splain") in Tryp
   val splainBreakInfix = settingKey[Int]("splain infix line break threshold") in Tryp
+  val splainTruncRefined = settingKey[Int]("splain infix refinement template length threshold") in Tryp
+  val splainVersion = settingKey[String]("splain version") in Tryp
 }
 
 trait TekKeys
@@ -25,6 +27,8 @@ trait TekKeys
   val sbtAmmoniteVersion = TekKeys.sbtAmmoniteVersion
   val splain = TekKeys.splain
   val splainBreakInfix = TekKeys.splainBreakInfix
+  val splainTruncRefined = TekKeys.splainTruncRefined
+  val splainVersion = TekKeys.splainVersion
   val coursierVersion = TrypKeys.coursierVersion
 }
 

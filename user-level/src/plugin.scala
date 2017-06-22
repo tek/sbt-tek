@@ -77,14 +77,19 @@ with Tryplug
     resolvers += Resolver.bintrayRepo("tek", "maven"),
     splain := true,
     splainBreakInfix := 100,
-    libraryDependencies ++= (if (splain.value) List(compilerPlugin("io.tryp" %% "splain" % "0.2.3")) else Nil),
+    splainTruncRefined := 20,
+    splainVersion := splainVersion.?(_.getOrElse("0.2.3")).value,
+    libraryDependencies ++= (
+      if (splain.value) List(compilerPlugin("io.tryp" %% "splain" % splainVersion.value)) else Nil
+    ),
     scalacOptions ++= (
       if (splain.value)
         List(
           "-P:splain:bounds",
           s"-P:splain:breakinfix:${splainBreakInfix.value}",
           "-P:splain:boundsimplicits:false",
-          "-P:splain:compact"
+          "-P:splain:compact",
+          s"-P:splain:truncrefined:${splainTruncRefined.value}"
         )
       else Nil
     )
