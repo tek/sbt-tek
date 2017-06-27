@@ -15,6 +15,7 @@ object TekKeys
   val splainBreakInfix = settingKey[Int]("splain infix line break threshold") in Tryp
   val splainTruncRefined = settingKey[Int]("splain infix refinement template length threshold") in Tryp
   val splainVersion = settingKey[String]("splain version") in Tryp
+  val trypArtifactRepo = settingKey[Boolean]("add resolvers to tryp nexus") in Tryp
 }
 
 trait TekKeys

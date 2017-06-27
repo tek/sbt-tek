@@ -64,7 +64,8 @@ with Tryplug
     ensimeIgnoreMissingDirectories := true,
     TrypKeys.useCoursier := true,
     coursierUseSbtCredentials := true,
-    resolvers ++= pulsarResolvers,
+    TekKeys.trypArtifactRepo := true,
+    resolvers ++= (if (TekKeys.trypArtifactRepo.value) pulsarResolvers else Nil),
     publishTo := publishTo.value orElse {
       val repo = if (isSnapshot.value) "snapshots" else "releases"
       Some(repo at s"$pulsarUri/$repo")
