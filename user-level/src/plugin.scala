@@ -8,7 +8,7 @@ import sbt._
 import Keys._
 import xsbti.{Position, Maybe}
 
-import org.ensime.EnsimeKeys.{ensimeIgnoreMissingDirectories, ensimeServerVersion}
+import org.ensime.EnsimeKeys.{ensimeIgnoreMissingDirectories, ensimeServerVersion, ensimeIgnoreScalaMismatch}
 
 import com.typesafe.sbt.SbtScalariform.autoImport._
 
@@ -62,6 +62,7 @@ with Tryplug
     releaseProc,
     releaseIgnoreUntrackedFiles := true,
     ensimeIgnoreMissingDirectories := true,
+    ensimeIgnoreScalaMismatch in ThisBuild := true,
     TrypKeys.useCoursier := true,
     coursierUseSbtCredentials := true,
     TekKeys.trypArtifactRepo := true,
