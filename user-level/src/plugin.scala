@@ -82,7 +82,10 @@ with Tryplug
     splainTruncRefined := 20,
     splainVersion := splainVersion.?(_.getOrElse("0.2.3")).value,
     libraryDependencies ++= (
-      if (splain.value) List(compilerPlugin("io.tryp" %% "splain" % splainVersion.value)) else Nil
+      if (splain.value)
+        if (splainVersion.value < "0.2.7") List(compilerPlugin("io.tryp" %% "splain" % splainVersion.value))
+        else  List(compilerPlugin("io.tryp" %% "splain" % splainVersion.value cross CrossVersion.patch))
+      else Nil
     ),
     scalacOptions ++= (
       if (splain.value)
