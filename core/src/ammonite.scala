@@ -1,7 +1,7 @@
 package ammonite
 
 import sbt.Attributed._
-import sbt.Project.Initialize
+import sbt.Def.Initialize
 import sbt._, Keys._
 
 import scala.util.Try
@@ -40,7 +40,7 @@ object AmmonitePlugin extends AutoPlugin {
       val mainClass = mainClassTask.value getOrElse sys.error("No main class detected.")
       val userArgs = parser.parsed
       val args = if (userArgs.isEmpty) defaultArgs.value else userArgs
-      toError(scalaRun.value.run(mainClass, data(classpath.value), args, streams.value.log))
+      scalaRun.value.run(mainClass, data(classpath.value), args, streams.value.log)
     }
   }
 
@@ -62,7 +62,7 @@ object AmmonitePlugin extends AutoPlugin {
       ammoniteVersion := {
         val fromEnv = sys.env.get("AMMONITE_VERSION")
         def fromProps = sys.props.get("ammonite.version")
-        val default = "0.8.1"
+        val default = "1.1.0"
 
         fromEnv
           .orElse(fromProps)
@@ -76,8 +76,8 @@ object AmmonitePlugin extends AutoPlugin {
       /* Overriding run and runMain defined by compileSettings so that they use fullClasspath of this scope (Ammonite),
        * taking into account the extra libraryDependencies above, and we can also supply default arguments
        * (initialCommands as predef). */
-      run <<= runTask(fullClasspath, mainClass in run, runner in run, (initialCommands in console).map(defaultArgs)),
-      runMain <<= Defaults.runMainTask(fullClasspath, runner in run),
+      run := runTask(fullClasspath, mainClass in run, runner in run, (initialCommands in console).map(defaultArgs)).inputTaskValue,
+      runMain := Defaults.runMainTask(fullClasspath, runner in run).inputTaskValue,
 
       mainClass := Some("ammonite.Main"),
 

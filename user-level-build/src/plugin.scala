@@ -1,6 +1,7 @@
 package tryp
 
 import sbt._
+import Keys._
 
 import TekKeys._
 
@@ -23,19 +24,20 @@ with Tryplug
   def tekUserLevelName = "tek-user-level"
 
   override def pluginVersionDefaults = super.pluginVersionDefaults ++ List(
-    propVersion(sbtAmmoniteVersion, "ammonite", "0.1.2")
+    propVersion(sbtAmmoniteVersion, "ammonite", "0.1.2"),
+    propVersion(coursierVersion, "coursier", "1.0.3"),
+    propVersion(ensimeVersion, "ensime", "2.5.1"),
   )
 
   import VersionUpdateKeys._
 
   override def projectSettings =
     super.projectSettings ++
-      deps(tekUserLevelName) ++
       pluginVersionDefaults ++
-      deps.pluginVersions(tekUserLevelName) ++
+      libSettings("tekUserLevel") ++
       Seq(
+        TrypKeys.libs := TekLibs,
         bintrayTekResolver,
-        TrypKeys.useCoursier := true,
         autoUpdateVersions := true,
         updateAllPlugins := true,
         updatePluginsExclude += "sbt-coursier",
@@ -46,27 +48,15 @@ with Tryplug
         }
       )
 
-  object TekDeps
-  extends PluginDeps
+  object TekLibs
+  extends Libs
   {
-    override def deps = super.deps ++ Map(
-      tekUserLevelName -> tekUserLevel
-    )
-
-    val dg = "sbt-dependency-graph"
-    val vv = "net.virtual-void"
-
-    val tekUserLevel = ids(
-      coursier,
-      plugin(trypOrg, "tek-user-level", TekKeys.tekVersion, "tek/sbt-tek", List("user-level")).bintray("tek"),
-      plugin("org.ensime", "sbt-ensime", ensimeVersion, "ensime/ensime-sbt").maven,
-      plugin("org.scalariform", "sbt-scalariform", scalariformVersion, "daniel-trinh/sbt-scalariform").maven,
-      plugin(vv, dg, depGraphVersion, s"jrudolph/$dg").maven,
-      plugin("com.github.gseitz", "sbt-release", sbtReleaseVersion, "sbt/sbt-release")
-        .bintray("sbt", "sbt-plugin-releases"),
-      plugin("com.github.alexarchambault", "sbt-ammonite", sbtAmmoniteVersion, "alexarchambault/sbt-ammonite").maven
+    val tekUserLevelPlugins = plugins(
+      plugin("io.get-coursier", "sbt-coursier", coursierVersion, MavenSource),
+      plugin("io.tryp", "tek-user-level", TekKeys.tekVersion, BintraySource("tek", "sbt-plugins")),
+      plugin("org.ensime", "sbt-ensime", ensimeVersion, MavenSource),
+      plugin("net.virtual-void", "sbt-dependency-graph", depGraphVersion, MavenSource),
+      // plugin("com.github.alexarchambault", "sbt-ammonite", sbtAmmoniteVersion, MavenSource),
     )
   }
-
-  override def deps: Deps = TekDeps
 }

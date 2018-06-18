@@ -6,76 +6,39 @@ import sbt.Keys._
 import sbtrelease.ReleasePlugin.autoImport.{releaseVersionBump, releaseIgnoreUntrackedFiles}
 import sbtrelease.Version.Bump
 
-import TrypKeys._
 import VersionUpdateKeys._
 
-object TekBuildKeys
-{
-  val ensimeVersion = settingKey[String]("ensime version")
-  val scalariformVersion = settingKey[String]("scalariform version")
-  val sbtReleaseVersion = settingKey[String]("release version")
-  val coursierVersion = settingKey[String]("coursier version")
-  val tryplugVersion = TrypKeys.tryplugVersion
-}
-import TekBuildKeys._
-
 object TekBuild
-extends sbt.Build
-with Tryplug
+extends AutoPlugin
 {
-  override def settings = super.settings ++ pluginVersionDefaults
+  override def trigger = noTrigger
 
-  def tryplugVersion = TrypKeys.tryplugVersion
-
-  lazy val core = pluginSubProject("core")
-    .settings(
-      name := "tek-core"
-    )
-
-  lazy val userlevelBuild = pluginSubProject("user-level-build")
-    .settings(name := "tek-user-level-build")
-    .dependsOn(core)
-
-  lazy val userlevel = pluginSubProject("user-level")
-    .settings(
-      useCoursier := true,
-      name := "tek-user-level"
-    )
-    .dependsOn(core)
-
-  lazy val root = pluginProject("root")
-    .settings(
-      releaseVersionBump := Bump.Major,
-      releaseIgnoreUntrackedFiles := true,
-      useCoursier := false,
-      handlePrefixMap := Map(
-        baseDirectory.value -> "tryp.TekBuildKeys."
-      )
-    )
-    .aggregate(core, userlevel, userlevelBuild)
-
-  object TekDeps
-  extends PluginDeps
+  object autoImport
   {
-    override def deps = super.deps ++ Map(
-      "root" -> userlevel,
-      "core" -> core,
-      "user-level" -> userlevel
-    )
-
-    val ensime = plugin("org.ensime", "sbt-ensime", ensimeVersion, "ensime/ensime-sbt").maven
-
-    val scalariform =
-      plugin("org.scalariform", "sbt-scalariform", scalariformVersion, "daniel-trinh/sbt-scalariform").no
-
-    val release = plugin("com.github.gseitz", "sbt-release", sbtReleaseVersion, "sbt/sbt-release")
-      .no
-      .bintray("sbt", "sbt-plugin-releases")
-
-    val core = ids(tryplug)
-
-    val userlevel = ids(ensime, scalariform, release, coursier)
+    val ensimeVersion = settingKey[String]("ensime version")
+    val scalariformVersion = settingKey[String]("scalariform version")
+    val sbtReleaseVersion = settingKey[String]("release version")
+    val coursierVersion = settingKey[String]("coursier version")
+    val tryplugVersion = settingKey[String]("tryplug version")
+    val TekLibs = tryp.TekLibs
   }
+}
 
-  override def deps = TekDeps
+object Plugins
+extends Libs
+{
+  import TekBuild.autoImport._
+  val ensime = plugin("org.ensime", "sbt-ensime", ensimeVersion, MavenSource)
+  def tryplug =
+    plugin("io.tryp", "tryplug", tryplugVersion, BintraySource("tek", "sbt-plugins"))
+  val coursier = plugin("io.get-coursier", "sbt-coursier", coursierVersion, MavenSource)
+}
+
+object TekLibs
+extends Libs
+{
+  import Plugins._
+  val corePlugins = plugins(tryplug)
+  val rootPlugins = plugins(ensime, coursier)
+  val userlevelPlugins = rootPlugins
 }

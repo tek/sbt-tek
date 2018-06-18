@@ -1,7 +1,10 @@
 import sbt._
 
 object P
-extends Plugin
+extends AutoPlugin
 {
-  val tryplugVersion = settingKey[String]("tryplug version")
+  object autoImport
+  {
+    val tryplugVersion = settingKey[String]("tryplug version")
+  }
 }

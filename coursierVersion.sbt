@@ -1,1 +1,1 @@
-tryp.TekBuildKeys.coursierVersion in Global := "1.0.0-RC8"
+TekBuild.autoImport.coursierVersion in Global := "1.0.3"
